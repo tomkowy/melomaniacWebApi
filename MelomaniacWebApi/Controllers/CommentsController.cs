@@ -12,6 +12,7 @@ namespace MelomaniacWebApi.Controllers
     public class CommentsController : ApiController
     {
         //GET api/comments/GetAllTrackComments/5
+        [HttpGet]
         public IEnumerable<Comment> GetAllTrackComments(int trackID)
         {
             DBConnection dbconn = new DBConnection();
