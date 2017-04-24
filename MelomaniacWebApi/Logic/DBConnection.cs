@@ -12,8 +12,8 @@ namespace MelomaniacWebApi.Logic
 {
     public class DBConnection
     {
-        private const string RATESTABLENAME = "";
-        private const string COMMENTSTABLENAME = "";
+        private const string RATESTABLENAME = "rates";
+        private const string COMMENTSTABLENAME = "comments";
         IMongoClient client;
         IMongoDatabase database;
 
