@@ -16,7 +16,8 @@ namespace MelomaniacWebApi.Controllers
         public IEnumerable<Comment> GetAllTrackComments(int trackID)
         {
             DBConnection dbconn = new DBConnection();
-            return dbconn.GetTrackComments(trackID);
+            var res = dbconn.GetTrackComments(trackID);
+            return res;
         }
         //POST api/comments/EditComment/id=5&comment=commentcontent
         [HttpPost]
