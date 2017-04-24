@@ -28,7 +28,7 @@ namespace MelomaniacWebApi.Logic
 
         public IEnumerable<Comment> GetTrackComments(long trackID)
         {
-            var rates = database.GetCollection<BsonDocument>(RATESTABLENAME);
+            var rates = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
 
             var filter = Builders<BsonDocument>.Filter.Eq("soundcloudid", trackID);
             var sort = Builders<BsonDocument>.Sort.Descending("date");
