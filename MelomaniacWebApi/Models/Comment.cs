@@ -10,14 +10,14 @@ namespace MelomaniacWebApi.Models
     public class Comment
     {
         [BsonId]
-        long _id { get; set; }
+        public long _id { get; set; }
         [DataMember, BsonElement]
-        string fb { get; set; }
+        public string fb { get; set; }
         [DataMember, BsonElement]
-        long soundcloud { get; set; }
+        public long soundcloud { get; set; }
         [DataMember, BsonElement]
-        string content { get; set; }
+        public string content { get; set; }
         [DataMember, BsonElement]
-        DateTime? date { get; set; }
+        public DateTime? date { get; set; }
     }
 }
