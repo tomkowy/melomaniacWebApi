@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 
 namespace MelomaniacWebApi.Models
@@ -10,9 +11,13 @@ namespace MelomaniacWebApi.Models
     {
         [BsonId]
         long _id { get; set; }
-        string fbid { get; set; }
-        long soundcloudid { get; set; }
+        [DataMember, BsonElement]
+        string fb { get; set; }
+        [DataMember, BsonElement]
+        long soundcloud { get; set; }
+        [DataMember, BsonElement]
         int mark { get; set; }
-        DateTime date { get; set; }
+        [DataMember, BsonElement]
+        DateTime? date { get; set; }
     }
 }
