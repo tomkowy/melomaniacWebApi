@@ -9,38 +9,38 @@ using System.Web.Http;
 
 namespace MelomaniacWebApi.Controllers
 {
-    public class CommentsController : ApiController
+    public class RatesController : ApiController
     {
-        //GET api/comments/GetAllTrackComments/5
+        //GET api/rates/GetAllTrackRatess/5
         [HttpGet]
-        public IEnumerable<Comment> GetAllTrackComments(int data)
+        public IEnumerable<Rate> GetAllTrackRates(int data)
         {
             DBConnection dbconn = new DBConnection();
-            var res = dbconn.GetTrackComments(data);
+            var res = dbconn.GetTrackRates(data);
             return res;
         }
-        //POST api/comments/EditComment/
+        //POST api/rates/EditRate/
         [HttpPost]
-        public bool EditComment([FromBody]Comment data)
+        public bool EditRate([FromBody]Rate data)
         {
             DBConnection dbconn = new DBConnection();
-            var res = dbconn.EditComment(data);
+            var res = dbconn.EditRate(data);
             return res;
         }
-        //POST api/comments/DeleteComment/
+        //POST api/rates/DeleteRate/
         [HttpPost]
-        public bool DeleteComment(long data)
+        public bool DeleteRate(long data)
         {
             DBConnection dbconn = new DBConnection();
-            var res = dbconn.DeleteComment(data);
+            var res = dbconn.DeleteRate(data);
             return res;
         }
-        //POST api/comments/PostComment/
+        //POST api/rates/PostRate/
         [HttpPost]
-        public bool PostComment([FromBody]Comment data)
+        public bool PostRate([FromBody]Rate data)
         {
             DBConnection dbconn = new DBConnection();
-            var res = dbconn.PostComment(data);
+            var res = dbconn.PostRate(data);
             return res;
         }
     }
