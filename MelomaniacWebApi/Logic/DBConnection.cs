@@ -30,7 +30,7 @@ namespace MelomaniacWebApi.Logic
         {
             var rates = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
 
-            var filter = Builders<BsonDocument>.Filter.Eq("soundcloudid", trackID);
+            var filter = Builders<BsonDocument>.Filter.Eq("soundcloud", trackID);
             var sort = Builders<BsonDocument>.Sort.Descending("date");
 
             var foundEntries = rates.Find(filter).Sort(sort).ToList();

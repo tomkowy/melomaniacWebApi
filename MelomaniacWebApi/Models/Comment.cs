@@ -11,9 +11,13 @@ namespace MelomaniacWebApi.Models
     {
         [BsonId]
         long _id { get; set; }
-        string fbid { get; set; }
-        long soundcloudid { get; set; }
+        [DataMember, BsonElement]
+        string fb { get; set; }
+        [DataMember, BsonElement]
+        long soundcloud { get; set; }
+        [DataMember, BsonElement]
         string content { get; set; }
-        DateTime date { get; set; }
+        [DataMember, BsonElement]
+        DateTime? date { get; set; }
     }
 }
