@@ -157,11 +157,12 @@ namespace MelomaniacWebApi.Logic
         {
             rateToPost.date = DateTime.Now;
             BsonDocument bsonRate = new BsonDocument();
-            bsonRate = rateToPost.ToBsonDocument();
 
             try
             {
                 rateToPost._id = GetNextObjectID("rates");
+                bsonRate = rateToPost.ToBsonDocument();
+
                 var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
                 collection.InsertOne(bsonRate);
                 return true;
