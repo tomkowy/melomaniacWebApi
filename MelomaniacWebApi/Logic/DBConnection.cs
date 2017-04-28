@@ -28,13 +28,11 @@ namespace MelomaniacWebApi.Logic
 
         public IEnumerable<Comment> GetTrackComments(long trackID)
         {
-            var rates = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
-
+            var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
             var filter = Builders<BsonDocument>.Filter.Eq("soundcloud", trackID);
             var sort = Builders<BsonDocument>.Sort.Descending("date");
 
-            var foundEntries = rates.Find(filter).Sort(sort).ToList();
-
+            var foundEntries = collection.Find(filter).Sort(sort).ToList();
             List<Comment> comments = new List<Comment>();
 
             foreach (var item in foundEntries)
@@ -47,9 +45,22 @@ namespace MelomaniacWebApi.Logic
 
         public IEnumerable<Comment> GetUserComments(string userID)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("fb", userID);
+            var sort = Builders<BsonDocument>.Sort.Descending("date");
+
+            var foundEntries = collection.Find(filter).Sort(sort).ToList();
+            List<Comment> comments = new List<Comment>();
+
+            foreach (var item in foundEntries)
+            {
+                comments.Add(BsonSerializer.Deserialize<Comment>(item));
+            }
+
+            return comments;
         }
 
+        //prawdopodobnie metoda nie jest potrzebna
         public Comment GetComment(int commentID)
         {
             throw new NotImplementedException();
@@ -57,31 +68,83 @@ namespace MelomaniacWebApi.Logic
 
         public bool PostComment(Comment commentToPost)
         {
-            throw new NotImplementedException();
+
+            commentToPost.date = DateTime.Now;
+            BsonDocument bsonComment = new BsonDocument();
+            bsonComment = commentToPost.ToBsonDocument();
+
+            try
+            {
+                var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
+                collection.InsertOne(bsonComment);
+                return true;
+            }
+            catch (Exception e)
+            {
+#if (DEBUG)
+                throw e;
+#endif
+                return false;
+            }
         }
 
-        public bool DeleteComment(int commentID)
+        public bool DeleteComment(long commentID)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", commentID);
+            var result = collection.DeleteOne(filter);
+
+            return result.DeletedCount > 0;
         }
 
         public bool EditComment(Comment commentToEdit)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", commentToEdit._id);
+            var update = Builders<BsonDocument>.Update
+                .Set("content", commentToEdit.content);
+            var result = collection.UpdateOne(filter, update);
+
+            return result.ModifiedCount > 0;
         }
 
 
 
         public IEnumerable<Rate> GetTrackRates(long trackID)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("soundcloud", trackID);
+            var sort = Builders<BsonDocument>.Sort.Descending("date");
+
+            var foundEntries = collection.Find(filter).Sort(sort).ToList();
+            List<Rate> rates = new List<Rate>();
+
+            foreach (var item in foundEntries)
+            {
+                rates.Add(BsonSerializer.Deserialize<Rate>(item));
+            }
+
+            return rates;
         }
 
         public IEnumerable<Rate> GetUserRates(string userID)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("fb", userID);
+            var sort = Builders<BsonDocument>.Sort.Descending("date");
+
+            var foundEntries = collection.Find(filter).Sort(sort).ToList();
+            List<Rate> rates = new List<Rate>();
+
+            foreach (var item in foundEntries)
+            {
+                rates.Add(BsonSerializer.Deserialize<Rate>(item));
+            }
+
+            return rates;
         }
 
+        //ta metoda także może okazać się nieprzydatna
         public Rate GetRate(int rateID)
         {
             throw new NotImplementedException();
@@ -89,17 +152,43 @@ namespace MelomaniacWebApi.Logic
 
         public bool PostRate(Rate rateToPost)
         {
-            throw new NotImplementedException();
+            rateToPost.date = DateTime.Now;
+            BsonDocument bsonRate = new BsonDocument();
+            bsonRate = rateToPost.ToBsonDocument();
+
+            try
+            {
+                var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
+                collection.InsertOne(bsonRate);
+                return true;
+            }
+            catch (Exception e)
+            {
+#if (DEBUG)
+                throw e;
+#endif
+                return false;
+            }
         }
 
-        public bool DeleteRate(int rateID)
+        public bool DeleteRate(long rateID)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", rateID);
+            var result = collection.DeleteOne(filter);
+
+            return result.DeletedCount > 0;
         }
 
         public bool EditRate(Rate rateToEdit)
         {
-            throw new NotImplementedException();
+            var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", rateToEdit._id);
+            var update = Builders<BsonDocument>.Update
+                .Set("content", rateToEdit.mark);
+            var result = collection.UpdateOne(filter, update);
+
+            return result.ModifiedCount > 0;
         }
     }
 }

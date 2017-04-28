@@ -20,8 +20,8 @@ namespace MelomaniacWebApi
 
             config.Routes.MapHttpRoute(
                     name: "ActionApi",
-                    routeTemplate: "api/{controller}/{action}/{trackID}",
-                    defaults: new { trackID = RouteParameter.Optional }
+                    routeTemplate: "api/{controller}/{action}/{data}",
+                    defaults: new { data = RouteParameter.Optional }
             /*name: "DefaultApi",
             routeTemplate: "api/{controller}/{id}",
             defaults: new { id = RouteParameter.Optional }*/

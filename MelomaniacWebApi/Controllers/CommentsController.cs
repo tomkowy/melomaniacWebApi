@@ -13,30 +13,35 @@ namespace MelomaniacWebApi.Controllers
     {
         //GET api/comments/GetAllTrackComments/5
         [HttpGet]
-        public IEnumerable<Comment> GetAllTrackComments(int trackID)
+        public IEnumerable<Comment> GetAllTrackComments(int data)
         {
             DBConnection dbconn = new DBConnection();
-            var res = dbconn.GetTrackComments(trackID);
+            var res = dbconn.GetTrackComments(data);
             return res;
         }
-        //POST api/comments/EditComment/id=5&comment=commentcontent
+        //POST api/comments/EditComment/
         [HttpPost]
-        public bool EditComment(int id, string content)
+        public bool EditComment([FromBody]Comment data)
         {
             DBConnection dbconn = new DBConnection();
-            return dbconn.EditComment(new Comment());
+            var res = dbconn.EditComment(data);
+            return res;
         }
-        //POST api/comments/DeleteComment/5
+        //POST api/comments/DeleteComment/
         [HttpPost]
-        public bool DeleteComment(int id)
+        public bool DeleteComment(long data)
         {
-            throw new NotImplementedException();
+            DBConnection dbconn = new DBConnection();
+            var res = dbconn.DeleteComment(data);
+            return res;
         }
-        //POST api/comments/PostComment/comment
+        //POST api/comments/PostComment/
         [HttpPost]
-        public bool PostComment(Comment commentToPost)
+        public bool PostComment([FromBody]Comment data)
         {
-            throw new NotImplementedException();
+            DBConnection dbconn = new DBConnection();
+            var res = dbconn.PostComment(data);
+            return res;
         }
     }
 }
