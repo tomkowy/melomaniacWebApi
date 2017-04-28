@@ -72,11 +72,12 @@ namespace MelomaniacWebApi.Logic
 
             commentToPost.date = DateTime.Now;
             BsonDocument bsonComment = new BsonDocument();
-            bsonComment = commentToPost.ToBsonDocument();
 
             try
             {
                 commentToPost._id = GetNextObjectID("comments");
+                bsonComment = commentToPost.ToBsonDocument();
+
                 var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
                 collection.InsertOne(bsonComment);
                 return true;

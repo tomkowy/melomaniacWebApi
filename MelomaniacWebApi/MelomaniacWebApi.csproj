@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="Logic\DBConnection.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\ModelIndex.cs" />
     <Compile Include="Models\Rate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
