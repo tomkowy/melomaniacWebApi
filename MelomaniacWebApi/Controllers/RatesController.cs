@@ -37,8 +37,8 @@ namespace MelomaniacWebApi.Controllers
 
             string jsonRes = "{'avg':'" + avg
                 + "','sum':'" + sum
-                + "','numberOfElements':" + numberOfElements
-                + "}";
+                + "','numberOfElements':'" + numberOfElements
+                + "'}";
 
             return jsonRes;
         }
