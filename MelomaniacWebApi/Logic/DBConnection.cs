@@ -164,6 +164,18 @@ namespace MelomaniacWebApi.Logic
                 bsonRate = rateToPost.ToBsonDocument();
 
                 var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
+                var con1 = Builders<BsonDocument>.Filter.Eq("fb", rateToPost.fb);
+                var con2 = Builders<BsonDocument>.Filter.Eq("soundcloud", rateToPost.soundcloud);
+                var conArr = (new List<FilterDefinition<BsonDocument>>() { con1, con2 }).ToArray();
+                var filter = Builders<BsonDocument>.Filter.And(conArr);
+
+                var sort = Builders<BsonDocument>.Sort.Descending("date");
+                var conflictedRates = collection.Find(filter).Sort(sort).ToList();
+                foreach (var rate in conflictedRates)
+                {
+                    this.DeleteRate(rateToPost._id);
+                }
+
                 collection.InsertOne(bsonRate);
                 return true;
             }
@@ -208,7 +220,7 @@ namespace MelomaniacWebApi.Logic
 
 
             var update = Builders<BsonDocument>.Update
-                .Set("value", value+1);
+                .Set("value", value + 1);
 
             collection.UpdateOne(filter, update);
 
