@@ -14,6 +14,7 @@ namespace MelomaniacWebApi.Logic
     {
         private const string RATESTABLENAME = "rates";
         private const string COMMENTSTABLENAME = "comments";
+        private const string INDEXESTABLENAME = "indexes";
         IMongoClient client;
         IMongoDatabase database;
 
@@ -75,6 +76,7 @@ namespace MelomaniacWebApi.Logic
 
             try
             {
+                commentToPost._id = GetNextObjectID("comments");
                 var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
                 collection.InsertOne(bsonComment);
                 return true;
@@ -158,6 +160,7 @@ namespace MelomaniacWebApi.Logic
 
             try
             {
+                rateToPost._id = GetNextObjectID("rates");
                 var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
                 collection.InsertOne(bsonRate);
                 return true;
@@ -189,6 +192,25 @@ namespace MelomaniacWebApi.Logic
             var result = collection.UpdateOne(filter, update);
 
             return result.ModifiedCount > 0;
+        }
+
+
+        private int GetNextObjectID(string indexName)
+        {
+            var collection = database.GetCollection<BsonDocument>(INDEXESTABLENAME);
+            var filter = Builders<BsonDocument>.Filter.Eq("name", indexName);
+
+            var foundEntries = collection.Find(filter).ToList();
+
+            int value = BsonSerializer.Deserialize<Index>(foundEntries[0]).value;
+
+
+            var update = Builders<BsonDocument>.Update
+                .Set("value", value+1);
+
+            collection.UpdateOne(filter, update);
+
+            return value;
         }
     }
 }
