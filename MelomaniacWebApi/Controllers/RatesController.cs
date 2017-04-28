@@ -33,12 +33,12 @@ namespace MelomaniacWebApi.Controllers
             }
             //można to policzyć w widoku
             int numberOfElements = ((List<Rate>)res).Count;
-            double avg = sum / numberOfElements;
+            double avg = numberOfElements > 0 ? sum / numberOfElements : 0;
 
-            string jsonRes = "{'avg':'" + avg 
-                + "','sum':'" + sum 
+            string jsonRes = "{'avg':'" + avg
+                + "','sum':'" + sum
                 + "','numberOfElements':" + numberOfElements
-                +"'}";
+                + "'}";
 
             return jsonRes;
         }
