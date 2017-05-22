@@ -33,7 +33,7 @@ namespace MelomaniacWebApi.Controllers
             }
             //można to policzyć w widoku
             int numberOfElements = ((List<Rate>)res).Count;
-            double avg = numberOfElements > 0 ? sum / numberOfElements : 0;
+            double avg = numberOfElements > 0 ? (double)(sum) / numberOfElements : 0;
 
             string jsonRes = "{'avg':'" + avg
                 + "','sum':'" + sum
@@ -65,6 +65,13 @@ namespace MelomaniacWebApi.Controllers
         {
             DBConnection dbconn = new DBConnection();
             var res = dbconn.PostRate(data);
+            return res;
+        }
+        //GET api/rates/GetUserRates/
+        [HttpGet]
+        public IEnumerable<Rate> GetUserRates(string data) {
+            DBConnection dbconn = new DBConnection();
+            var res = dbconn.GetUserRates(data);
             return res;
         }
     }

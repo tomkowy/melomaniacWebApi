@@ -43,5 +43,12 @@ namespace MelomaniacWebApi.Controllers
             var res = dbconn.PostComment(data);
             return res;
         }
+        //GET api/comments/GetUserComments/
+        [HttpGet]
+        public IEnumerable<Comment> GetUserComments(string data) {
+            DBConnection dbconn = new DBConnection();
+            var res = dbconn.GetUserComments(data);
+            return res;
+        }
     }
 }

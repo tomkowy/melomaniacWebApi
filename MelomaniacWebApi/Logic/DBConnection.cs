@@ -20,13 +20,26 @@ namespace MelomaniacWebApi.Logic
 
         public DBConnection()
         {
-            string uri = ConfigurationManager.ConnectionStrings["CommentRateConnectionString"].ConnectionString;
+            string uri ;
+            try
+            {
+                uri = ConfigurationManager.ConnectionStrings["CommentRateConnectionString"].ConnectionString;
+            }
+            catch (Exception ex)
+            {
+                uri = @"mongodb://admin:passw0rd123@ds060749.mlab.com:60749/melomandb";
+            }           
             string dbname = "melomandb";
 
             client = new MongoClient(uri);
             database = client.GetDatabase(dbname);
         }
 
+        /// <summary>
+        /// Method searching for comments of a song specified in the parameter
+        /// </summary>
+        /// <param name="trackID">ID of a track</param>
+        /// <returns>Comments on this song</returns>
         public IEnumerable<Comment> GetTrackComments(long trackID)
         {
             var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
@@ -105,7 +118,8 @@ namespace MelomaniacWebApi.Logic
             var collection = database.GetCollection<BsonDocument>(COMMENTSTABLENAME);
             var filter = Builders<BsonDocument>.Filter.Eq("_id", commentToEdit._id);
             var update = Builders<BsonDocument>.Update
-                .Set("content", commentToEdit.content);
+                .Set("content", commentToEdit.content)
+                .Set("date", DateTime.Now);
             var result = collection.UpdateOne(filter, update);
 
             return result.ModifiedCount > 0;
@@ -202,7 +216,8 @@ namespace MelomaniacWebApi.Logic
             var collection = database.GetCollection<BsonDocument>(RATESTABLENAME);
             var filter = Builders<BsonDocument>.Filter.Eq("_id", rateToEdit._id);
             var update = Builders<BsonDocument>.Update
-                .Set("content", rateToEdit.mark);
+                .Set("mark", rateToEdit.mark)
+                .Set("date", DateTime.Now);
             var result = collection.UpdateOne(filter, update);
 
             return result.ModifiedCount > 0;
