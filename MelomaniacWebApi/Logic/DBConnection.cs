@@ -187,7 +187,7 @@ namespace MelomaniacWebApi.Logic
                 var conflictedRates = collection.Find(filter).Sort(sort).ToList();
                 foreach (var rate in conflictedRates)
                 {
-                    this.DeleteRate(rateToPost._id);
+                    this.DeleteRate(BsonSerializer.Deserialize<Rate>(rate)._id);
                 }
 
                 collection.InsertOne(bsonRate);
